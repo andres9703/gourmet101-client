@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from '../../../shared/layout/navbar/navbar.component';
+import { NavbarComponent } from '../../../shared/components/layout/navbar/navbar.component';
 import { ButtonModule } from 'primeng/button';
 
 

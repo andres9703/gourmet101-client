@@ -1,0 +1,26 @@
+<div class="min-h-screen flex flex-col md:flex-row">
+    <!-- Left side - Image (full width and height on desktop) -->
+    <div class="md:w-1/2 relative">
+      <img src="images/banner.jpg" alt="Welcome illustration" class="absolute inset-0 w-full h-full object-cover"/>
+    </div>
+    
+    <!-- Right side - Content (full 50% on desktop) -->
+    <div class="md:w-1/2 flex items-center justify-center p-8">
+      <div class="w-full max-w-md flex flex-col justify-center min-h-screen">
+        <div class="text-center md:text-left">
+          <h1 class="text-4xl font-bold text-black mb-2">Welcome to Gourmet101!</h1>
+          <p class="text-black mb-8">Join our community and start sharing your experiences</p>
+          
+          <div class="flex flex-col gap-2">
+            <p-button (click)="login()" severity="primary" styleClass="w-full" label="Log In"/>
+            
+            <!-- <p-button (click)="signUp()" severity="primary" styleClass="w-full" label="Sign Up"/> -->
+          </div>
+          
+          <p class="mt-8 text-sm text-gray-500">
+            By signing up, you agree to our Terms of Service and Privacy Policy
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>

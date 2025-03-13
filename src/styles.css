@@ -1,43 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+@import "primeicons/primeicons.css";
 /* :root {
     color-scheme: light dark;
   } */
 html, body { height: 100%; }
 
-  body {
-    /* color: light-dark(#000, #efefec);
-    background-color: light-dark(#efedea, #fff); */
-    margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
+  @font-face {
+    font-family: 'banner';
+    font-family: 'banner';
+    src: url("/fonts/banner-font.ttf") format('truetype');
   }
 
-  @layer base {
-    :root {
-      --orange-50: #fff3e0;  /* Very light orange */
-      --orange-100: #ffe0b2; /* Light orange */
-      --orange-200: #ffcc80; /* Soft orange */
-      --orange-300: #ffb74d; /* Medium orange */
-      --orange-400: #ff9800; /* Vibrant orange */
-      --orange-500: #fb8c00; /* Slightly darker orange */
-      --orange-600: #f57c00; /* Darker orange */
-      --orange-700: #ef6c00; /* Deep orange */
-      --orange-800: #e65100; /* Dark orange */
-      --orange-900: #d84315; /* Very dark orange */
-      --orange-950: #bf360c; /* Deepest orange shade */
-    }
-  
-    /* Optional: Adjust for dark mode if needed */
-    .my-app-dark {
-      --orange-50: #fff3e0;
-      --orange-100: #ffe0b2;
-      --orange-200: #ffcc80;
-      --orange-300: #ffb74d;
-      --orange-400: #ff9800;
-      --orange-500: #fb8c00;
-      --orange-600: #f57c00;
-      --orange-700: #ef6c00;
-      --orange-800: #e65100;
-      --orange-900: #d84315;
-      --orange-950: #bf360c;
-    }
+  @font-face {
+    font-family: 'hanged';
+    src: url("/fonts/hanged.ttf") format('truetype');
   }
+
+  .banner-font {
+    font-family: 'banner';
+  }
+  
+
