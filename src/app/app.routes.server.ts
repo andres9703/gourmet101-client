@@ -18,6 +18,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Client 
   },
   {
+    path: 'error',
+    renderMode: RenderMode.Client
+  },
+  {
     path: 'profile',
     renderMode: RenderMode.Client
   }

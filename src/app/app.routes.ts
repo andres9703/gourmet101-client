@@ -30,6 +30,11 @@ export const routes: Routes = [
         canActivate: [authGuard]    
     },
     {
+        path: 'error',
+        loadComponent: () => import('./presentation/error/pages/error/error.component').then(m => m.ErrorComponent),
+        title: 'Error'
+    },
+    {
         path: '**',
         redirectTo: 'login',
         pathMatch: 'full'

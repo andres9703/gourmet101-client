@@ -24,21 +24,22 @@
         
         <!-- Desktop profile button (right side) -->
         <div class="hidden md:flex items-center gap-2">
-              <p-avatar (click)="menu.toggle($event)" label="V" styleClass="mr-2" size="large" [style]="{ 'background-color': '#ece9fc', color: '#2a1261' }" shape="circle" />
+              <p-avatar (click)="menu.toggle($event)" label=  "{{profileFirstLetter()}}" styleClass="mr-2" size="large" [style]="{ 'background-color': '#ece9fc', color: '#2a1261' }" shape="circle" />
         </div>
       </div>
     </div>
 
-    <p-menu #menu [model]="items" [popup]="true" />
+    <p-menu #menu [model]="items" [popup]="true"/>
+     
     
     <!-- Mobile menu, show/hide based on menu state -->
      @if(isMobileMenuOpen) {
     <div class="md:hidden h-screen ">
-      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-100 w-full h-screen flex flex-col">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 w-full h-screen flex flex-col">
         <div class="flex flex-col gap-2 mt-2.5">
           @if(isAuthenticated) {
-            <p-button [link]="true" routerLink="/feed" label="Feed" styleClass="!text-black" icon="pi pi-megaphone"/>
-            <p-button [link]="true" routerLink="/profile" label="Profile" styleClass="!text-black" icon="pi pi-user"/>
+            <p-button [link]="true" routerLink="/feed" label="Feed"  icon="pi pi-megaphone" styleClass="text-gray-900"/>
+            <p-button [link]="true" routerLink="/profile" label="Profile"  icon="pi pi-user" styleClass="text-gray-900"/>
             <p-button (click)="logout()" label="Logout" variant="text" severity="danger" icon="pi pi-power-off"></p-button>
           }
         </div>
