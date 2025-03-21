@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class GetUserUseCase {
   constructor(private userRepository: UserRepositoryImplementation) {}
 
-  execute(): Observable<UserEntity> {
+  execute(): Observable<{ user: UserEntity; isAuthenticated: boolean }> {
     return this.userRepository.getUser();
   }
 }

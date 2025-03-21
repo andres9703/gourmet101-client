@@ -12,9 +12,14 @@ import { UserMapper } from '../../mappers/user/user.mapper';
 export class UserRepositoryImplementation implements UserRepository {
 
   constructor(private userApiDataSource: UserApiDataSource, private userMapper: UserMapper) {}
-  getUser(): Observable<UserEntity> {
+  getUser(): Observable<{ user: UserEntity; isAuthenticated: boolean }> {
     return this.userApiDataSource.getUser().pipe(
-      map(userModel => this.userMapper.mapToDomain(userModel))
+      map((userInfo) => {
+        return {
+          user: this.userMapper.mapToDomain(userInfo.user),
+          isAuthenticated: userInfo.isAuthenticated
+        };
+      })
     );
   }
 

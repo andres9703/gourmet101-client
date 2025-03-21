@@ -1,38 +1,29 @@
-import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { map, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { UserAuthService } from '../services/user-auth.service';
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthGuard implements CanActivate {
+  constructor(private authService: UserAuthService, private router: Router) {}
 
-
-export const authGuard: CanActivateFn = (route, state) => {
-  const http = inject(HttpClient);
-  const router = inject(Router);
-  const platformId = inject(PLATFORM_ID);
-
-  if (isPlatformBrowser(platformId)) {
-    // Browser: Check authentication status with the server
-    return http.get<{ isAuthenticated: boolean }>(`http://localhost:3000/auth/check`, {
-      withCredentials: true, // Include cookies in the request
-    }).pipe(
-      map(response => {
-        if (response.isAuthenticated) {
-          return true;
-        } else {
-          router.navigate(['/login']);
-          return false;
+  canActivate(): Observable<boolean> {
+    return this.authService.isAuthenticated().pipe(
+      map((userInfo) => {
+        if (userInfo.isAuthenticated) {
+          return true; // Allow access
         }
+        console.log('Unauthorized access attempt <----------------------');
+        this.router.navigate(['/login']); // Redirect to login if not authenticated
+        return false;
       }),
-      catchError(() => {
-        // Handle server errors (e.g., network failure, 401)
-        router.navigate(['/login']);
+      catchError((error) => {
+        console.error('Error checking authentication:', error);
+        this.router.navigate(['/login']); // Redirect to login on error
         return of(false);
       })
     );
-  } else {
-    // Server: Allow rendering (client will handle redirection after hydration)
-    return true;
   }
-};
+}

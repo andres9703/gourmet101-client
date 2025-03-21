@@ -4,11 +4,12 @@ import { AuthService } from '@auth0/auth0-angular';
 import { RouterLink, RouterModule } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { Menu } from 'primeng/menu'
-// import { MenuItem } from '../../../interfaces/navbar/navbar.interface';
 import { GetUserUseCase } from 'src/app/domain/usecases';
 import { UserEntity } from 'src/app/domain/entities';
 import { Button } from "primeng/button";
 import { MenuItem } from 'primeng/api';
+import { ServerAuthService } from 'src/app/core/auth/services/auth-service.service';
+import { Router } from '@angular/router';
 
 
 
@@ -26,37 +27,33 @@ export class NavbarComponent {
       this.profileFirstLetter.set(this.user()?.name[0].toUpperCase() || '');
     })
   }
-  // items: MenuItem[] = [
-  //   { label: 'Feed', icon: 'pi pi-megaphone', routerLink: '/feed' },
-  //   { label: 'Profile', icon: 'pi pi-user', routerLink: '/profile' },
-  //   { label: 'Logout', icon: 'pi pi-power-off', command: () => this.logout() }
-  // ];
-
+ 
   items: MenuItem[] | undefined;
   isMobileMenuOpen = false;
   isAuthenticated = false;
+  profileFirstLetter = signal('');
+  user = signal<UserEntity | null>(null);
+ 
 
   private auth = inject(AuthService);
   private getUserUseCase = inject(GetUserUseCase);
+  private serverAuth = inject(ServerAuthService);
+  private router = inject(Router);
 
-  user = signal<UserEntity | null>(null);
-  profileFirstLetter = signal('');
-
+ 
   ngOnInit() {
-      this.getUserUseCase.execute().subscribe((user) => {
-        console.log(user, "😀😀😀");
-        this.user.set(user);
+      this.getUserUseCase.execute().subscribe((userInfo) => {
+        this.user.set(userInfo.user);
+        this.isAuthenticated = userInfo.isAuthenticated;
       });
 
-      this.auth?.isAuthenticated$.subscribe((isAuthenticated) => {
-        this.isAuthenticated = isAuthenticated;
-      });
+      console.log({user: this.user(), isAuthenticated: this.isAuthenticated}, "🙏🙏🙏🙏");
 
       this.items = [
         {
             items: [
                 {
-                    label: 'New',
+                    label: 'Feed',
                     icon: 'pi pi-megaphone',
                     routerLink: '/feed',
                 },
@@ -76,7 +73,10 @@ export class NavbarComponent {
   }
              
   logout() {
-    this.auth.logout();
+    this.serverAuth.logout().subscribe(() => {
+      this.auth.logout();
+      this.router.navigate(['/login']);
+    });
   }
 
 

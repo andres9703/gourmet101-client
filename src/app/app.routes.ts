@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/auth/guards/auth-guard.guard';
+import { AuthGuard } from './core/auth/guards/auth-guard.guard';
 
 export const routes: Routes = [
     {
@@ -21,13 +21,13 @@ export const routes: Routes = [
         path: 'feed',
         loadComponent: () => import('./presentation/feed/pages/feed-home/feed-home.component').then(m => m.FeedHomeComponent),
         title: 'Feed',
-        canActivate: [authGuard]
+        canActivate: [AuthGuard]
     },
     {
         path: 'profile',
         loadComponent: () => import('./presentation/profile/pages/profile/profile.component').then(m => m.ProfileComponent),
         title: 'Profile',
-        canActivate: [authGuard]    
+        canActivate: [AuthGuard]   
     },
     {
         path: 'error',
@@ -36,8 +36,8 @@ export const routes: Routes = [
     },
     {
         path: '**',
-        redirectTo: 'login',
-        pathMatch: 'full'
+        loadComponent: () => import('./presentation/error/pages/error/error.component').then(m => m.ErrorComponent),
+        title: 'Error'
     }
 ];
     

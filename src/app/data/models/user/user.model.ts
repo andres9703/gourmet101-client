@@ -1,36 +1,30 @@
-interface SocialUser {
-    nickname: string;
-    name: string;
-    picture: string;
-    updated_at: string;
-    sub: string;
-  }
-  
-  interface GitHubUser extends SocialUser {
+import { UserEntity } from 'src/app/domain';  
+
+  interface GitHubUser extends UserEntity {
     email: string;  // GitHub specific
   }
   
-  interface GoogleUser extends SocialUser {
+  interface GoogleUser extends UserEntity {
     given_name?: string;
     family_name?: string;
     email?: string;
     email_verified?: boolean;
   }
   
-  interface FacebookUser extends SocialUser {
+  interface FacebookUser extends UserEntity {
     given_name?: string;
     family_name?: string;
     email_verified?: boolean;
   }
   
-  interface MicrosoftUser extends SocialUser {
+  interface MicrosoftUser extends UserEntity {
     given_name?: string;
     family_name?: string;
     locale?: string;
     email_verified?: boolean;
   }
   
-  interface TwitterUser extends SocialUser {
+  interface TwitterUser extends UserEntity {
     // Twitter-specific properties if any
   }
   

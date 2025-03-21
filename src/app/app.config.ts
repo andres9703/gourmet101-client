@@ -2,7 +2,6 @@ import { ApplicationConfig, inject, PLATFORM_ID, provideZoneChangeDetection } fr
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import { OrangePreset } from './presentation/shared/theme/theme';
 import Aura from '@primeng/themes/aura'
 
 import { routes } from './app.routes';
@@ -30,10 +29,11 @@ export const appConfig: ApplicationConfig = {
      } }),
     provideAuth0({
       domain: 'dev-t1u7ensmo082ywsp.us.auth0.com',
-      clientId: 'ISNFKXq5zLmVehoOD07ETDykQsUYAYrZ',
+      clientId: 'gbxBqcM9VFNEP4HFK2SrNSymJXJW0MrE',
       authorizationParams: {
         redirect_uri: 'http://localhost:4200/callback'
-      }
+      },
+      skipRedirectCallback: true
     }),
   ]
 };

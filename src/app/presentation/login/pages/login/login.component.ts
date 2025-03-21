@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '@auth0/auth0-angular';
-import { Router, RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -9,20 +9,17 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './login.component.html',
   styles: ``
 })
-export class LoginComponent implements OnInit {
-  private auth = inject(AuthService);
-  private router = inject(Router);
+export class LoginComponent  {
+ 
 
-  ngOnInit():void {
-   this.auth.isAuthenticated$.subscribe((isAuthenticated) => {
-      if (isAuthenticated) {
-        this.router.navigate(['/feed']);
-      }
-    })
-  }
+  constructor(private auth: AuthService) {}
 
   login() {
     console.log('Login in...')
-    this.auth.loginWithRedirect();
+    this.auth.loginWithRedirect({
+      authorizationParams: {
+        redirect_uri: 'http://localhost:4200/callback'
+      }
+    });
   }
 }

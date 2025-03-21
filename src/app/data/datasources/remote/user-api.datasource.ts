@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { filter, map, Observable } from 'rxjs';
 import { AuthService } from '@auth0/auth0-angular';
+import { UserAuthService } from 'src/app/core/auth/services/user-auth.service';
 import { User } from '../../models/user/user.model';
 
 
@@ -10,12 +11,11 @@ import { User } from '../../models/user/user.model';
 export class UserApiDataSource {
   constructor() {}
 
-  private auth = inject(AuthService);
+  private userAuth = inject(UserAuthService);
 
-  getUser(): Observable<User> {
-    return this.auth.user$.pipe(
-      filter((user): user is User => user !== null && user !== undefined),
-      map(user => user as User)
+  getUser(): Observable<{ user: User; isAuthenticated: boolean }> {
+    return this.userAuth.isAuthenticated().pipe(
+      map(({ user, isAuthenticated }) => ({ user, isAuthenticated }))
     );
   }
 
