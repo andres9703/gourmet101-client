@@ -18,7 +18,8 @@ export class LoginComponent  {
     console.log('Login in...')
     this.auth.loginWithRedirect({
       authorizationParams: {
-        redirect_uri: 'http://localhost:4200/callback'
+        redirect_uri: 'http://localhost:4200/callback',
+        scope: 'openid profile email offline_access',
       }
     });
   }

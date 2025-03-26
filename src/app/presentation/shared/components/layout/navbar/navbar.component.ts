@@ -24,15 +24,25 @@ export class NavbarComponent {
   constructor() {
 
     effect(() => {
+     this.getUserUseCase.execute().subscribe((userInfo) => {
+      this.user.set(userInfo.user);
+      this.isAuthenticated.set(userInfo.isAuthenticated);
+
+      console.log({user: this.user(), isAuthenticated: this.isAuthenticated()}, "💕💕");
+    });
+    })
+
+    effect(() => {
       this.profileFirstLetter.set(this.user()?.name[0].toUpperCase() || '');
     })
   }
  
   items: MenuItem[] | undefined;
   isMobileMenuOpen = false;
-  isAuthenticated = false;
+  isAuthenticated = signal(false);
   profileFirstLetter = signal('');
   user = signal<UserEntity | null>(null);
+
  
 
   private auth = inject(AuthService);
@@ -42,12 +52,6 @@ export class NavbarComponent {
 
  
   ngOnInit() {
-      this.getUserUseCase.execute().subscribe((userInfo) => {
-        this.user.set(userInfo.user);
-        this.isAuthenticated = userInfo.isAuthenticated;
-      });
-
-      console.log({user: this.user(), isAuthenticated: this.isAuthenticated}, "🙏🙏🙏🙏");
 
       this.items = [
         {
@@ -71,7 +75,8 @@ export class NavbarComponent {
         },
     ];
   }
-             
+
+       
   logout() {
     this.serverAuth.logout().subscribe(() => {
       this.auth.logout();

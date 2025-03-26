@@ -31,7 +31,8 @@ export const appConfig: ApplicationConfig = {
       domain: 'dev-t1u7ensmo082ywsp.us.auth0.com',
       clientId: 'gbxBqcM9VFNEP4HFK2SrNSymJXJW0MrE',
       authorizationParams: {
-        redirect_uri: 'http://localhost:4200/callback'
+        redirect_uri: 'http://localhost:4200/callback',
+        scope: 'openid profile email offline_access',
       },
       skipRedirectCallback: true
     }),
