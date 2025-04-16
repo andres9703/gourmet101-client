@@ -1,0 +1,25 @@
+<div class="h-screen w-screen bg-cover bg-center flex items-center justify-center" style="background-image: url('images/welcome.jpg')">
+    <div class="card flex flex-col items-center gap-6 p-8 max-w-sm mx-auto mt-10 bg-white rounded-2xl shadow-lg">
+        <h2 class="text-2xl font-bold text-gray-800">Select User Type</h2>
+      
+        <form [formGroup]="formGroup" class="w-full space-y-4">
+          <p-dropdown 
+            [options]="stateOptions" 
+            formControlName="value" 
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Select a type"
+            class="w-full">
+          </p-dropdown>
+      
+          <button 
+            pButton 
+            type="button" 
+            label="Submit" 
+            class="w-full p-button-lg p-button-rounded p-button-info" 
+            (click)="submit()">
+          </button>
+        </form>
+      </div>
+  </div>
+  

@@ -18,6 +18,11 @@ export const routes: Routes = [
         title: 'Callback'
     },
     {
+        path: 'welcome',
+        loadComponent: () => import('./presentation/welcome/pages/welcome-page/welcome-page.component').then(m => m.WelcomePageComponent),
+        title: 'Welcome'
+    },
+    {
         path: 'feed',
         loadComponent: () => import('./presentation/feed/pages/feed-home/feed-home.component').then(m => m.FeedHomeComponent),
         title: 'Feed',
