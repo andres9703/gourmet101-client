@@ -1,8 +1,9 @@
-import { Component, inject, effect, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { NavbarComponent } from '../../../shared/components/layout/navbar/navbar.component';
 import { ButtonModule } from 'primeng/button';
-import { GetUserUseCase, UserEntity } from 'src/app/domain';
+import { UserEntity } from 'src/app/domain';
 import { JsonPipe } from '@angular/common';
+import { UserStateService } from 'src/app/core/state/user-state.service';
 
 
 @Component({
@@ -10,17 +11,11 @@ import { JsonPipe } from '@angular/common';
   imports: [NavbarComponent, ButtonModule, JsonPipe],
   templateUrl: './feed-home.component.html',
 })
-export class FeedHomeComponent {
-  private getUserUseCase = inject(GetUserUseCase);
+export class FeedHomeComponent implements OnInit {
+  userStateService = inject(UserStateService);
   user = signal<UserEntity | null>(null);
-  private isAuthenticated = signal(false);
 
-  constructor() {
-    effect(() => {
-      this.getUserUseCase.execute().subscribe((userInfo) => {
-        this.user.set(userInfo.user);
-        this.isAuthenticated.set(userInfo.isAuthenticated);
-      });
-    });
+  ngOnInit() {
+    this.user.set(this.userStateService.getUserFromSessionStorage());
   }
 }

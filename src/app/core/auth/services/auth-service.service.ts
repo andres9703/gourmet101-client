@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import { GetUserUseCase, UserEntity } from 'src/app/domain';
+import { UserStateService } from '../../state/user-state.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServerAuthService {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private getUserUseCase: GetUserUseCase, private userStateService: UserStateService ) {}
 
   handleCallback(code: string, codeVerifier: string) {
     console.log(code, '🐱‍🏍🐱‍🏍🐱‍🏍 Code');
@@ -28,11 +30,7 @@ export class ServerAuthService {
       .pipe(
         tap((response) => {
           console.log('Callback response:🐯🐯🐯🐯', response);
-          if (response.success) {
-            this.router.navigate(['/feed']);
-          } else {
-            this.router.navigate(['/error']);
-          }
+         return true
         }),
         catchError((error) => {
           console.error('Callback error:🐞🐞', error);
@@ -40,6 +38,10 @@ export class ServerAuthService {
           return throwError(() => new Error('Authentication failed'));
         })
       );
+  }
+
+  loadUserState (): Observable<{user: UserEntity, isAuthenticated: boolean} | null> {
+    return this.userStateService.loadUserToSessionStorage()
   }
 
   logout(): Observable<void> {

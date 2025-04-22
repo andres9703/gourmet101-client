@@ -1,9 +1,11 @@
 export interface GourmetUserEntity {
     id: string;
     email: string;
-    first_name: string;
-    last_name: string;
-    user_type: 'normal' | 'business';
-    profile_picture?: string;
+    firstName: string;
+    lastName: string;
+    userType: 'normal' | 'business';
+    profilePicture?: string;
     phone?: string;
+    user_id: string;
+    isProfileComplete: boolean;
 }

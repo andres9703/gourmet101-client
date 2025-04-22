@@ -1,5 +1,5 @@
 import { Observable } from "rxjs";
-import { UserEntity } from "../../entities/user/user.entity";
+import { UserEntity } from "../../entities";
 
 export interface UserRepository {
   getUser(): Observable<{ user: UserEntity; isAuthenticated: boolean }>;

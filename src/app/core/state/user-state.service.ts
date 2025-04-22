@@ -1,49 +1,43 @@
 import { Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
-import { GourmetUserEntity } from 'src/app/domain/entities/gourmet-user/gourmet-user.entity';
+import { mapTo, of, tap } from 'rxjs';
+import { UserEntity } from 'src/app/domain';
+import { GetUserUseCase } from 'src/app/domain';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserStateService {
   // The reactive signal holding your current user state
-  private readonly _user = signal<GourmetUserEntity | null>(null);
+  private readonly _user = signal<UserEntity | null>(this.getUserFromSessionStorage());
 
-  constructor(private http: HttpClient) {}
+  constructor(private getUserUseCase: GetUserUseCase) {
+
+  }
 
   // Public readonly user signal
   readonly user = this._user.asReadonly();
 
-  //user already fill in the profile fields
-  isProfileReady = signal<boolean>(false)
-
   // Load user from API (after login / app start)
-  loadUser() {
-    return this.http.get<GourmetUserEntity>('/api/profile').pipe(
-      map((user) => {
-        this._user.set(user);
-        return user;
+  loadUserToSessionStorage() {
+    return this.getUserUseCase.execute().pipe(
+      tap((userInfo) => {
+        sessionStorage.setItem('user', JSON.stringify(userInfo.user));
       })
     );
   }
 
-  // Update local state after profile update
-  updateUser(updatedUser: GourmetUserEntity) {
-    this._user.set(updatedUser);
+  getUserFromSessionStorage() {
+    const user = sessionStorage.getItem('user') || null;
+    if (user) {
+      return JSON.parse(user);
+    }
+    return null;
   }
 
   // Clear state (on logout)
   clearUser() {
     this._user.set(null);
+    sessionStorage.removeItem('user');
   }
 
-  // Convenient helper (if you need it)
-  isLoggedIn() {
-    return this.user() !== null;
-  }
-
-  getUserId() {
-    return this.user()?.id;
-  }
 }

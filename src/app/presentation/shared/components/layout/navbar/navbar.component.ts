@@ -10,6 +10,7 @@ import { Button } from "primeng/button";
 import { MenuItem } from 'primeng/api';
 import { ServerAuthService } from 'src/app/core/auth/services/auth-service.service';
 import { Router } from '@angular/router';
+import { UserStateService } from 'src/app/core/state/user-state.service';
 
 
 
@@ -23,19 +24,9 @@ export class NavbarComponent {
 
   constructor() {
 
-    effect(() => {
-     this.getUserUseCase.execute().subscribe((userInfo) => {
-      this.user.set(userInfo.user);
-      this.isAuthenticated.set(userInfo.isAuthenticated);
-
-      console.log({user: this.user(), isAuthenticated: this.isAuthenticated()}, "💕💕");
-    });
-    })
-
-    effect(() => {
-      this.profileFirstLetter.set(this.user()?.name[0].toUpperCase() || '');
-    })
   }
+
+
  
   items: MenuItem[] | undefined;
   isMobileMenuOpen = false;
@@ -46,12 +37,15 @@ export class NavbarComponent {
  
 
   private auth = inject(AuthService);
-  private getUserUseCase = inject(GetUserUseCase);
   private serverAuth = inject(ServerAuthService);
   private router = inject(Router);
+  private userStateService = inject(UserStateService);
 
  
   ngOnInit() {
+
+    this.user.set(this.userStateService.getUserFromSessionStorage());
+    this.profileFirstLetter.set(this.user()?.name[0].toUpperCase() || '');
 
       this.items = [
         {
@@ -80,6 +74,7 @@ export class NavbarComponent {
   logout() {
     this.serverAuth.logout().subscribe(() => {
       this.auth.logout();
+      this.userStateService.clearUser();
       this.router.navigate(['/login']);
     });
   }

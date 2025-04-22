@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ServerAuthService } from 'src/app/core/auth/services/auth-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { catchError, of, switchMap, throwError } from 'rxjs';
+import { UserEntity } from 'src/app/domain';
 
 @Component({
   selector: 'app-callback',
@@ -42,12 +44,32 @@ export class CallbackComponent implements OnInit {
       }
 
       // Pass both code and code_verifier to ServerAuthService
-      this.serverAuth.handleCallback(code, codeVerifier).subscribe({
-        next: () => console.log('Callback succeeded'),
-        error: (err) => {
-          console.error('Callback failed:', err);
+      this.serverAuth.handleCallback(code, codeVerifier).pipe(
+        catchError(err => {
+          console.error('handleCallback failed:', err);
           this.router.navigate(['/error']);
-        },
+          return throwError(() => err);
+        }),
+        switchMap(() => this.serverAuth.loadUserState()),
+        catchError(err => {
+          console.error('User state failed:', err);
+          this.router.navigate(['/error']);
+          return throwError(() => err);
+        }),
+        switchMap((userState: {user: UserEntity, isAuthenticated: boolean} | null) => {
+          console.log(userState?.user.sub, "USER STATE SUB <---------")
+          return of(true)
+        }),
+        catchError(err => {
+          console.error('Database save failed:', err);
+          this.router.navigate(['/error']);
+          return throwError(() => err);
+        })
+      ).subscribe({
+        next: (finalResponse) => {
+          console.log(finalResponse, "FINAL RESPONSE 👍👍👍")
+          this.router.navigate(['/profile']);
+        }
       });
     } else {
       console.error('No code found in URL');
