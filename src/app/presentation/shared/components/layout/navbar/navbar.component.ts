@@ -11,6 +11,7 @@ import { MenuItem } from 'primeng/api';
 import { ServerAuthService } from 'src/app/core/auth/services/auth-service.service';
 import { Router } from '@angular/router';
 import { UserStateService } from 'src/app/core/state/user-state.service';
+import { GourmetUserStateService } from 'src/app/core/state/gourmet-user-state.service';
 
 
 
@@ -40,6 +41,7 @@ export class NavbarComponent {
   private serverAuth = inject(ServerAuthService);
   private router = inject(Router);
   private userStateService = inject(UserStateService);
+  private gourmetUserStateService = inject(GourmetUserStateService);
 
  
   ngOnInit() {
@@ -75,6 +77,7 @@ export class NavbarComponent {
     this.serverAuth.logout().subscribe(() => {
       this.auth.logout();
       this.userStateService.clearUser();
+      this.gourmetUserStateService.clearUser();
       this.router.navigate(['/login']);
     });
   }

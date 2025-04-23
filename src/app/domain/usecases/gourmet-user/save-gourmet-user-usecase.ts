@@ -6,10 +6,11 @@ import { GourmetUserRepositoryImplementation } from 'src/app/data/repositories/g
 @Injectable({
   providedIn: 'root'
 })
-export class GetGourmetUserUseCase {
+export class SaveGourmetUserUseCase {
   constructor(private gourmetUserRepository: GourmetUserRepositoryImplementation) {}
 
-  execute(sub: string): Observable<{user:GourmetUserEntity, subSubmitted:string}> {
-    return this.gourmetUserRepository.getUserById(sub);
+  execute(sub: string): Observable<GourmetUserEntity> {
+    console.log(sub, "SEEING THE SUB FROM THE CALLBACK ROUTE!!!")
+    return this.gourmetUserRepository.saveUser(sub);
   }
 }

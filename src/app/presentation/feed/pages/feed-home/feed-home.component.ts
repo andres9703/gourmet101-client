@@ -3,7 +3,7 @@ import { NavbarComponent } from '../../../shared/components/layout/navbar/navbar
 import { ButtonModule } from 'primeng/button';
 import { UserEntity } from 'src/app/domain';
 import { JsonPipe } from '@angular/common';
-import { UserStateService } from 'src/app/core/state/user-state.service';
+import { GourmetUserStateService } from 'src/app/core/state/gourmet-user-state.service';
 
 
 @Component({
@@ -12,10 +12,10 @@ import { UserStateService } from 'src/app/core/state/user-state.service';
   templateUrl: './feed-home.component.html',
 })
 export class FeedHomeComponent implements OnInit {
-  userStateService = inject(UserStateService);
+  gourmetUserStateService = inject(GourmetUserStateService);
   user = signal<UserEntity | null>(null);
 
   ngOnInit() {
-    this.user.set(this.userStateService.getUserFromSessionStorage());
+    this.user.set(this.gourmetUserStateService.getGourmetUserFromSessionStorage());
   }
 }

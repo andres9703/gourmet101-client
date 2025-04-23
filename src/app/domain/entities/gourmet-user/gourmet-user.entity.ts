@@ -6,6 +6,6 @@ export interface GourmetUserEntity {
     userType: 'normal' | 'business';
     profilePicture?: string;
     phone?: string;
-    user_id: string;
+    userId: string;
     isProfileComplete: boolean;
 }

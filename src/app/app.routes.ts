@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/guards/auth-guard.guard';
+import { ProfileGuard } from './core/auth/guards/profile-confirmation.guard';
 
 export const routes: Routes = [
     {
@@ -26,7 +27,7 @@ export const routes: Routes = [
         path: 'feed',
         loadComponent: () => import('./presentation/feed/pages/feed-home/feed-home.component').then(m => m.FeedHomeComponent),
         title: 'Feed',
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, ProfileGuard]
     },
     {
         path: 'profile',
