@@ -1,118 +1,128 @@
-<app-navbar/>
+<app-navbar />
 <!-- <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <p class="mt-8 text-gray-900">Profile here</p>
 </div> -->
 
-<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8"> 
-    <h2 class="text-2xl font-bold text-center mb-4">Profile</h2>
-  
-    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-5">
-  
-      <!-- Profile Picture -->
-      <div class="text-center">
-        <div class="w-full flex justify-center flex-col items-center">
-            @if (profileImagePreview) {
-                <div class="w-full flex justify-center my-4">
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <h2 class="text-2xl font-bold text-center mb-4">Profile</h2>
 
-                    <img 
-                      [src]="profileImagePreview"
-                      alt="Profile Picture"
-                      class="w-32 h-32 rounded-full object-cover border-4 border-blue-500 block"
-                    />
-                </div>
-            } @else {
-                <div class="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 text-sm my-4">
-                  No Image
-                </div>
-            }
-            <p-fileupload mode="basic" name="demo[]" chooseIcon="pi pi-upload" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" [auto]="true" chooseLabel="Browse" />
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-5">
+    @if (!isProfileComplete()) {
+    <p-message severity="warn">Please complete your profile before continue</p-message>
+    }
+
+    <!-- Profile Picture -->
+    <div class="text-center">
+      <div class="w-full flex justify-center flex-col items-center">
+        <div class="w-full flex justify-center my-4">
+          <img
+            [src]="profileImagePreview || user()?.profilePicture"
+            alt="Profile Picture"
+            class="w-32 h-32 rounded-full object-cover border-4 border-blue-500 block"
+          />
         </div>
-      </div>
-  
-      <!-- Name -->
-      <div>
-        <label class="block mb-1 font-medium">Name</label>
-        <input 
-          pInputText 
-          type="text" 
-          formControlName="name"
-          class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Your name"
-        />
-        @if (profileForm.get('name')?.invalid && profileForm.get('name')?.touched) {
-            <small class="text-red-500" >Please add a valid lastname</small>
-           }
-      </div>
-  
-      <!-- Lastname -->
-      <div>
-        <label class="block mb-1 font-medium">Lastname</label>
-        <input 
-          pInputText 
-          type="text" 
-          formControlName="lastname"
-          class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Your lastname"
-        />
-        @if (profileForm.get('lastname')?.invalid && profileForm.get('lastname')?.touched) {
-            <small class="text-red-500" >Please add a valid lastname</small>
-           }
-      </div>
-  
-      <!-- Email -->
-      <div>
-        <label class="block mb-1 font-medium">Email</label>
-        <input 
-          pInputText 
-          type="email" 
-          formControlName="email"
-          class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="you@example.com"
-        />
-        @if (profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
-            <small class="text-red-500" >Please add a valid email</small>
-           }
-      </div>
-  
-      <!-- Phone -->
-      <div>
-        <label class="block mb-1 font-medium">Phone</label>
-        <input 
-          pInputText 
-          type="text"
-          formControlName="phone"
-          class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="+57 300 000 0000"
-        />
-         @if (profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched) {
-          <small class="text-red-500" >Please add a valid phone</small>
-         }
-      </div>
 
-      <div>
-        <label class="block mb-1 font-medium">User Type</label>
-        <p-dropdown 
-          [options]="userTypeOptions" 
-          formControlName="userType" 
-          placeholder="Select a user type"
-          class="w-full">
-        </p-dropdown>
-        @if (profileForm.get('userType')?.invalid && profileForm.get('userType')?.touched) {
-          <small class="text-red-500" >Please add a valid user type</small>
-        }
+        <p-fileupload
+          mode="basic"
+          name="demo[]"
+          chooseIcon="pi pi-upload"
+          url="https://www.primefaces.org/cdn/api/upload.php"
+          accept="image/*"
+          maxFileSize="1000000"
+          (onUpload)="onBasicUploadAuto($event)"
+          [auto]="true"
+          chooseLabel="Browse"
+        />
       </div>
+    </div>
 
-  
-      <!-- Submit Button -->
-      <div class="text-center">
-        <button 
-          pButton 
-          type="submit"
-          label="Save Changes"
-          class="px-6 py-3 text-white rounded-lg bg-blue-600 hover:bg-blue-700">
-        </button>
-      </div>
-  
-    </form>
+    <!-- Name -->
+    <div>
+      <label class="block mb-1 font-medium">Name</label>
+      <input
+        pInputText
+        type="text"
+        formControlName="firstName"
+        class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Your name"
+      />
+      @if (profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched) {
+      <small class="text-red-500">Please add a valid name</small>
+      }
+    </div>
+
+    <!-- Lastname -->
+    <div>
+      <label class="block mb-1 font-medium">Lastname</label>
+      <input
+        pInputText
+        type="text"
+        formControlName="lastName"
+        class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Your lastname"
+      />
+      @if (profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched) {
+      <small class="text-red-500">Please add a valid lastname</small>
+      }
+    </div>
+
+    <!-- Email -->
+    <div>
+      <label class="block mb-1 font-medium">Email</label>
+      <input
+        pInputText
+        type="email"
+        formControlName="email"
+        class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="you@example.com"
+      />
+      @if (profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
+      <small class="text-red-500">Please add a valid email</small>
+      }
+    </div>
+
+    <!-- Phone -->
+    <div>
+      <label class="block mb-1 font-medium">Phone</label>
+      <input
+        pInputText
+        type="text"
+        formControlName="phone"
+        class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="+57 300 000 0000"
+      />
+      @if (profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched) {
+      <small class="text-red-500">Please add a valid phone</small>
+      }
+    </div>
+
+    <div>
+      <label class="block mb-1 font-medium">User Type</label>
+      <p-dropdown
+        [options]="userTypeOptions"
+        formControlName="userType"
+        placeholder="Select a user type"
+        class="w-full"
+      >
+      </p-dropdown>
+      @if (profileForm.get('userType')?.invalid && profileForm.get('userType')?.touched) {
+      <small class="text-red-500">Please add a valid user type</small>
+      }
+    </div>
+
+    <!-- Submit Button -->
+    <div class="text-center">
+      <button
+        [disabled]="isLoadingUpdate()"
+        [loading]="isLoadingUpdate()"
+        pButton
+        type="submit"
+        label="Save Changes"
+        class="px-6 py-3 text-white rounded-lg bg-blue-600 hover:bg-blue-700"
+      ></button>
+    </div>
+  </form>
+  <div>
+    <p-toast styleClass="responsive-toast flex justify-content-center px-2 md:px-0" />
   </div>
-  
+</div>

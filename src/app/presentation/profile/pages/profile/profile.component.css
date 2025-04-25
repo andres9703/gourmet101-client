@@ -1,0 +1,9 @@
+.responsive-toast {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  @media (min-width: 641px) {
+    max-width: 360px !important;
+    margin: 0 auto;
+  }
+}

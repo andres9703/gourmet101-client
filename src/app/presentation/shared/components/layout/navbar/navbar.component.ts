@@ -1,10 +1,9 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '@auth0/auth0-angular';
 import { RouterLink, RouterModule } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { Menu } from 'primeng/menu'
-import { GetUserUseCase } from 'src/app/domain/usecases';
 import { UserEntity } from 'src/app/domain/entities';
 import { Button } from "primeng/button";
 import { MenuItem } from 'primeng/api';
@@ -23,8 +22,7 @@ import { GourmetUserStateService } from 'src/app/core/state/gourmet-user-state.s
 export class NavbarComponent {
 
 
-  constructor() {
-
+  constructor(private auth: AuthService) {
   }
 
 
@@ -37,17 +35,17 @@ export class NavbarComponent {
 
  
 
-  private auth = inject(AuthService);
   private serverAuth = inject(ServerAuthService);
   private router = inject(Router);
   private userStateService = inject(UserStateService);
   private gourmetUserStateService = inject(GourmetUserStateService);
 
- 
   ngOnInit() {
-
+  
     this.user.set(this.userStateService.getUserFromSessionStorage());
     this.profileFirstLetter.set(this.user()?.name[0].toUpperCase() || '');
+
+    console.log(this.isAuthenticated())
 
       this.items = [
         {
